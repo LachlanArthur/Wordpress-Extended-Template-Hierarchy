@@ -6,6 +6,7 @@ function la_single_template_with_category() {
 	$object = get_queried_object();
 	$templates = array();
 	if (!empty($object->post_type)) {
+		$templates[] = "single-{$object->post_type}-{$object->ID}.php";
 		$taxes = get_taxonomies(array('object_type' => array($object->post_type)));
 		$all_terms = get_terms($taxes);
 		$taxes = array_fill_keys($taxes, array());
