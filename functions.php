@@ -8,12 +8,14 @@ function la_single_template_with_category() {
 	if (!empty($object->post_type)) {
 		$templates[] = "single-{$object->post_type}-{$object->ID}.php";
 		$taxes = get_taxonomies(array('object_type' => array($object->post_type)));
-		$all_terms = get_terms($taxes);
 		$taxes = array_fill_keys($taxes, array());
 		foreach ($taxes as $tax_slug => &$tax_terms) {
-			$tax_terms = wp_list_pluck(wp_list_filter($all_terms, array('taxonomy' => $tax_slug)), 'slug');
-			foreach ($tax_terms as $term_slug) {
-				$templates[] = "single-{$object->post_type}-$tax_slug-$term_slug.php";
+			$post_terms = wp_get_object_terms($object->ID, $tax_slug);
+			if (count($post_terms) > 0) {
+				$tax_terms = wp_list_pluck($post_terms, 'slug');
+				foreach ($tax_terms as $term_slug) {
+					$templates[] = "single-{$object->post_type}-$tax_slug-$term_slug.php";
+				}
 			}
 		}
 		$templates[] = "single-{$object->post_type}.php";
