@@ -14,32 +14,47 @@ The post ID is also available:
 
 	single-{$post_type}-{$post_id}.php
 
+Also works with WooCommerce products.
+
 ## Example Filenames
-Here is an example of the order that Wordpress might look for files.
-This example would be for a site with a custom post type `product` that has two taxonomies `category` & `size`.
+Here are some examples of the order that Wordpress might look for files.
 
-Product with ID 1234 in category `camera`, and term `large` in the taxonomy `size`:
+Post where `id=100`, `category=blog,news` and `tag=travel`:
 
-	single-product-1234.php
-	single-product-category-camera.php
-	single-product-size-large.php
-	single-product.php
+	single-post-100.php
+	single-post-category-blog.php
+	single-post-category-news.php
+	single-post-tag-travel.php
+	single-post.php
 	single.php
 
-Product with ID 2345 in category `speaker`, and term `small` in the taxonomy `size`:
+Custom post type `book` where `id=1234`, `genre=horror`, and `length=long`:
 
+	single-book-1234.php
+	single-book-genre-horror.php
+	single-book-length-long.php
+	single-book.php
+	single.php
+
+WooCommerce Product where `id=2345`, `product_cat=speaker`, and `manufacturer=acme`:
+
+	woocommerce.php
 	single-product-2345.php
-	single-product-category-speaker.php
-	single-product-size-small.php
+	woocommerce/single-product-2345.php
+	single-product-product_cat-speaker.php
+	woocommerce/single-product-product_cat-speaker.php
+	single-product-manufacturer-acme.php
+	woocommerce/single-product-manufacturer-acme.php
 	single-product.php
-	single.php
+	woocommerce/single-product.php
+
+## Ordering Taxonomies
+If you want to change the order of the taxonomies, use the filter `la_single_template_with_category_tax_order` and return an array of taxonomy slugs (`array('category', 'tag')`).
+Two example functions are provided to override the taxonomy order.
 
 ## Notes
-This function only looks for templates with a single term in a single single category.
-This means you could not, using the example scenario above,
-have a template that applies to `category:speaker` and `size:large` at the same time.
+This function only looks for templates with a single term in a single category.
+This means you could not, using the book example above,
+have a template that applies to both `genre=horror` and `length=long` at the same time.
 This is because doing so would require checking for an exponentially growing number of templates.
 In those cases you would probably be better off simply using the `single-{$post_type}-{$post_id}.php` template filename.
-
-## Todo
-Look into ways to specify a taxonomy order (eg. `size` before `category` in the example above).
